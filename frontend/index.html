@@ -3,601 +3,622 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CyberGuard | Security Operations</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CyberGuard | AI Security Center</title>
 
 <style>
 :root {
-    --bg: #0b1020;
-    --panel: #121a2d;
-    --panel2: #172137;
-    --border: #293650;
-    --text: #e8eefb;
-    --muted: #93a2bd;
-    --cyan: #58d8e8;
-    --green: #45d6a0;
-    --red: #ff6b81;
-    --yellow: #f5c66b;
+    --bg:#080d18;
+    --panel:#101827;
+    --panel2:#152238;
+    --border:#26354c;
+    --text:#edf3ff;
+    --muted:#91a1b8;
+    --blue:#5b9dff;
+    --cyan:#48d9e8;
+    --green:#43d9a3;
+    --red:#ff657d;
+    --yellow:#ffcc66;
 }
-
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Inter, Segoe UI, Arial, sans-serif;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    padding: 22px 5%;
-    border-bottom: 1px solid var(--border);
-    background: #0e1527;
-}
-
-.brand {
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: .4px;
-}
-
-.brand span { color: var(--cyan); }
-
-.subtitle {
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.status {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    color: var(--green);
-    font-size: 13px;
-}
-
-.dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--green);
-}
-
-main {
-    max-width: 1450px;
-    margin: auto;
-    padding: 28px 5%;
-}
-
-.page-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
-}
-
-h1 {
-    font-size: 27px;
-    margin: 0 0 7px;
-}
-
-p {
-    color: var(--muted);
-    margin: 0;
-    font-size: 14px;
-}
-
-button, select {
-    border: 1px solid var(--border);
-    background: var(--panel2);
-    color: var(--text);
-    border-radius: 8px;
-    padding: 10px 14px;
-    cursor: pointer;
-}
-
-button:hover { border-color: var(--cyan); }
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
-}
-
-.card, .panel {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 13px;
-}
-
-.card { padding: 20px; }
-
-.card-label {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.card-value {
-    font-size: 34px;
-    font-weight: 750;
-    margin: 15px 0 8px;
-}
-
-.card-note {
-    color: var(--muted);
-    font-size: 12px;
-}
-
-.green { color: var(--green); }
-.red { color: var(--red); }
-.cyan { color: var(--cyan); }
-.yellow { color: var(--yellow); }
-
-.grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
-    gap: 20px;
-    margin-bottom: 22px;
-}
-
-.panel { padding: 21px; min-width: 0; }
-
-.panel-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 16px;
-    margin: 0;
-}
-
-.panel-heading small {
-    color: var(--muted);
-}
-
-.stat-row {
-    margin: 22px 0;
-}
-
-.stat-label {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    font-size: 13px;
-    margin-bottom: 9px;
-}
-
-.track {
-    height: 8px;
-    background: #27334b;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.bar {
-    height: 100%;
-    border-radius: 10px;
-    transition: width .3s;
-}
-
-.bar-green { background: var(--green); }
-.bar-red { background: var(--red); }
-.bar-yellow { background: var(--yellow); }
-
-.table-wrap { overflow-x: auto; }
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-    white-space: nowrap;
-    font-size: 12px;
-}
-
-th {
-    text-align: left;
-    padding: 13px 12px;
-    color: var(--muted);
-    background: var(--panel2);
-    font-weight: 600;
-}
-
-td {
-    padding: 14px 12px;
-    border-bottom: 1px solid var(--border);
-}
-
-tr:last-child td { border-bottom: none; }
-
-.pill {
-    display: inline-block;
-    border-radius: 6px;
-    padding: 5px 8px;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.pill-benign {
-    background: #12372f;
-    color: var(--green);
-}
-
-.pill-attack {
-    background: #451f30;
-    color: var(--red);
-}
-
-.pill-invalid {
-    background: #45351d;
-    color: var(--yellow);
-}
-
-.empty {
-    text-align: center;
-    padding: 28px 12px;
-    color: var(--muted);
-    font-size: 13px;
-}
-
-footer {
-    text-align: center;
-    padding: 25px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 12px;
-}
-
-#message {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 15px;
-}
-
-@media (max-width: 900px) {
-    .cards { grid-template-columns: repeat(2, 1fr); }
-    .grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 500px) {
-    header { padding: 18px 5%; }
-    .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .card { padding: 14px; }
-    .card-value { font-size: 27px; }
-    h1 { font-size: 23px; }
-}
+* {box-sizing:border-box}
+body {margin:0;background:var(--bg);color:var(--text);font:14px "Segoe UI",Arial,sans-serif}
+button,input,textarea {font:inherit}
+button {cursor:pointer}
+.layout {display:flex;min-height:100vh}
+.sidebar {width:230px;flex-shrink:0;background:#0c1321;border-right:1px solid var(--border);padding:22px 14px}
+.brand {display:flex;gap:11px;align-items:center;padding:0 7px 23px;border-bottom:1px solid var(--border)}
+.brand-icon {width:40px;height:40px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#2776ff,#23c7d7);font-size:23px}
+.brand h2 {margin:0;font-size:19px}
+.brand small {display:block;color:var(--muted);margin-top:4px}
+.nav-label {color:#667891;font-size:10px;letter-spacing:1.5px;font-weight:700;margin:25px 10px 10px}
+.nav-item {display:flex;gap:12px;align-items:center;padding:12px;margin:4px 0;border-radius:8px;color:#a8b7cc;text-decoration:none}
+.nav-item:hover,.nav-item.active {background:#192942;color:white}
+.nav-item.active {box-shadow:inset 3px 0 var(--blue)}
+.nav-icon {width:20px;text-align:center}
+.sidebar-note {margin-top:27px;padding:13px;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.6}
+main {flex:1;min-width:0;padding:27px 29px 40px}
+.topbar {display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:25px}
+.eyebrow {font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1.5px}
+h1 {font-size:29px;margin:8px 0}
+h2 {font-size:17px;margin:0}
+h3 {font-size:15px;margin:0 0 5px}
+.subtitle {color:var(--muted);line-height:1.6}
+.top-actions {display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.status-pill {display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--border);border-radius:20px;color:var(--muted);font-size:12px}
+.dot {width:7px;height:7px;border-radius:50%;background:var(--yellow);display:inline-block;flex-shrink:0}
+.dot.online {background:var(--green)}
+.dot.offline {background:var(--red)}
+.btn {padding:10px 13px;background:#18253a;color:var(--text);border:1px solid var(--border);border-radius:8px}
+.btn:hover {border-color:var(--blue)}
+.btn.primary {background:#2468dd;border-color:#2468dd;color:white}
+.btn:disabled {opacity:.55;cursor:wait}
+.section-heading {display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:28px 0 14px}
+.section-heading p {margin:5px 0 0;color:var(--muted);font-size:12px}
+.grid {display:grid;gap:14px}
+.stats-grid {grid-template-columns:repeat(4,minmax(0,1fr))}
+.modules-grid {grid-template-columns:repeat(3,minmax(0,1fr))}
+.two-col {grid-template-columns:repeat(2,minmax(0,1fr))}
+.card {background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;min-width:0}
+.stat-top {display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.stat-icon {width:34px;height:34px;display:grid;place-items:center;background:#1b2b45;border-radius:9px;color:var(--cyan);font-size:17px}
+.stat-number {font-size:28px;font-weight:700;margin:15px 0 6px;overflow-wrap:anywhere}
+.stat-foot,.small {font-size:11px;color:var(--muted);line-height:1.6}
+.good {color:var(--green)} .bad {color:var(--red)} .warn {color:var(--yellow)}
+.capture-card {border-color:#28516a;background:linear-gradient(120deg,#101d2e,#10212d)}
+.capture-line {display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.capture-state {font-size:24px;font-weight:700;margin:12px 0 5px}
+.module-card {position:relative;overflow:hidden}
+.module-card:before {content:"";height:2px;position:absolute;left:0;right:0;top:0;background:var(--blue)}
+.module-card.cyan:before {background:var(--cyan)}
+.module-card.green:before {background:var(--green)}
+.module-head {display:flex;gap:12px;align-items:center}
+.module-icon {width:42px;height:42px;display:grid;place-items:center;border-radius:10px;background:#1b2b45;font-size:20px}
+.module-head p {margin:0;color:var(--muted);font-size:11px}
+.module-status {display:flex;align-items:center;gap:8px;margin:16px 0 12px}
+.module-desc {font-size:12px;color:#a8b6cb;line-height:1.7;min-height:42px}
+.module-link {display:inline-block;margin-top:13px;color:var(--cyan);text-decoration:none;font-size:12px}
+.form-label {display:block;margin:17px 0 8px;font-size:12px;font-weight:600}
+.input,textarea {width:100%;display:block;padding:12px;background:#0b1321;color:var(--text);border:1px solid #2a3a53;border-radius:8px;outline:none}
+.input:focus,textarea:focus {border-color:var(--blue)}
+textarea {min-height:125px;resize:vertical;line-height:1.6}
+.form-actions {display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.result {display:none;margin-top:16px;padding:14px;background:#0b1321;border:1px solid var(--border);border-radius:9px;line-height:1.65;overflow-wrap:anywhere}
+.result.show {display:block}
+.result.safe {border-color:#246e59}
+.result.danger,.result.error {border-color:#813748}
+.result.warning {border-color:#78602e}
+.result h4 {margin:0 0 8px}
+.result p {margin:6px 0;color:#bac8da}
+.table-wrap {overflow:auto;border:1px solid var(--border);border-radius:10px;max-height:560px}
+table {width:100%;border-collapse:collapse;min-width:1450px}
+th,td {padding:12px 13px;text-align:left;border-bottom:1px solid #202c40;font-size:12px;white-space:nowrap}
+th {background:#101827;color:var(--muted);font-weight:600;position:sticky;top:0;z-index:1}
+td {color:#c7d4e6}
+tr:last-child td {border-bottom:0}
+.tag {display:inline-block;border-radius:5px;padding:4px 7px;background:#192c42;color:#a8caff;font-size:10px}
+.tag.safe {background:#12382f;color:var(--green)}
+.tag.danger {background:#421d2a;color:#ff899b}
+.tag.warning {background:#3b301b;color:var(--yellow)}
+.empty {padding:23px;text-align:center;color:var(--muted);white-space:normal;line-height:1.7}
+.alert-list {display:grid;gap:10px}
+.alert-item {padding:13px;background:#0c1422;border:1px solid #2c283a;border-radius:9px}
+.alert-meta {font-size:11px;color:var(--muted);margin-top:7px;overflow-wrap:anywhere}
+.footer {margin-top:30px;padding-top:16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#667891;font-size:11px}
+@media(max-width:1200px) {.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.modules-grid{grid-template-columns:1fr}}
+@media(max-width:850px) {.sidebar{width:67px;padding:17px 8px}.brand{justify-content:center;padding:0 0 20px}.brand-text,.nav-label,.nav-text,.sidebar-note{display:none}.nav-item{justify-content:center;padding:13px 4px}main{padding:20px 14px}}
+@media(max-width:650px) {.two-col{grid-template-columns:1fr}.stat-number{font-size:24px}.card{padding:14px}}
 </style>
 </head>
 
 <body>
-<header>
-    <div>
-        <div class="brand">CYBER<span>GUARD</span></div>
-        <div class="subtitle">AI-POWERED CYBERSECURITY PLATFORM</div>
+<div class="layout">
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-icon">⬡</div>
+        <div class="brand-text"><h2>CyberGuard</h2><small>AI Security Center</small></div>
     </div>
-    <div class="status">
-        <span class="dot" id="statusDot"></span>
-        <span id="connectionStatus">Connecting to API...</span>
+    <div class="nav-label">WORKSPACE</div>
+    <a class="nav-item active" href="#overview"><span class="nav-icon">▦</span><span class="nav-text">Overview</span></a>
+    <a class="nav-item" href="#modules"><span class="nav-icon">⬡</span><span class="nav-text">Detection Modules</span></a>
+    <div class="nav-label">DETECTION</div>
+    <a class="nav-item" href="#network"><span class="nav-icon">⌘</span><span class="nav-text">Network IDS</span></a>
+    <a class="nav-item" href="#url-scanner"><span class="nav-icon">↗</span><span class="nav-text">URL Scanner</span></a>
+    <a class="nav-item" href="#phishing-scanner"><span class="nav-icon">✉</span><span class="nav-text">Phishing Scanner</span></a>
+    <a class="nav-item" href="#alerts"><span class="nav-icon">⚑</span><span class="nav-text">Security Alerts</span></a>
+    <div class="sidebar-note"><span class="dot online"></span> Local monitoring<p>Live capture runs through the local IDS pipeline when the dashboard is opened.</p></div>
+</aside>
+
+<main>
+<header class="topbar">
+    <div>
+        <div class="eyebrow">THREAT MONITORING PLATFORM</div>
+        <h1>Security Overview</h1>
+        <div class="subtitle">Monitor network flows, suspicious URLs and phishing messages.</div>
+    </div>
+    <div class="top-actions">
+        <div class="status-pill"><span id="apiDot" class="dot"></span><span id="apiStatus">Connecting...</span></div>
+        <button class="btn" id="refreshBtn" onclick="refreshAll()">↻ Refresh</button>
     </div>
 </header>
 
-<main>
-    <section class="page-title">
-        <div>
-            <h1>Security Operations Center</h1>
-            <p>Network monitoring and threat detection overview</p>
-        </div>
-        <button id="refreshButton">↻ Refresh data</button>
-    </section>
+<section id="overview">
+    <div class="section-heading"><div><h2>Live network monitoring</h2><p>Capture starts automatically when this dashboard is opened.</p></div></div>
 
-    <section class="cards">
-        <div class="card">
-            <div class="card-label">Total network flows</div>
-            <div class="card-value cyan" id="totalFlows">—</div>
-            <div class="card-note">Recorded flow predictions</div>
-        </div>
-        <div class="card">
-            <div class="card-label">Benign flows</div>
-            <div class="card-value green" id="benignFlows">—</div>
-            <div class="card-note">Classified as benign</div>
-        </div>
-        <div class="card">
-            <div class="card-label">Detected attacks</div>
-            <div class="card-value red" id="attacks">—</div>
-            <div class="card-note">Flagged by binary IDS</div>
-        </div>
-        <div class="card">
-            <div class="card-label">Invalid flows</div>
-            <div class="card-value yellow" id="invalidFlows">—</div>
-            <div class="card-note">Invalid or incomplete features</div>
-        </div>
-    </section>
-
-    <section class="grid">
-        <div class="panel">
-            <div class="panel-heading">
-                <h2>Network traffic overview</h2>
-                <small>From saved predictions</small>
+    <div class="card capture-card">
+        <div class="capture-line">
+            <div>
+                <div class="eyebrow">NETWORK IDS WORKER</div>
+                <div class="capture-state" id="captureState">Checking status...</div>
+                <div class="small" id="captureDetails">Waiting for capture worker information.</div>
             </div>
+            <div class="status-pill"><span class="dot" id="captureDot"></span><span id="captureBadge">Checking</span></div>
+        </div>
+        <div class="small" id="captureError" style="margin-top:10px"></div>
+    </div>
 
-            <div class="stat-row">
-                <div class="stat-label">
-                    <span>Benign flows</span>
-                    <strong id="benignPercent">—</strong>
-                </div>
-                <div class="track">
-                    <div class="bar bar-green" id="benignBar" style="width:0%"></div>
-                </div>
+    <div class="section-heading">
+        <div><h2>Network telemetry</h2><p>Summary of recorded flow detections.</p></div>
+        <span class="small" id="lastUpdated">Waiting for data</span>
+    </div>
+    <div class="grid stats-grid">
+        <div class="card"><div class="stat-top">Total Network Flows <span class="stat-icon">⌘</span></div><div class="stat-number" id="totalFlows">—</div><div class="stat-foot">Rows in results CSV</div></div>
+        <div class="card"><div class="stat-top">Benign Flows <span class="stat-icon">✓</span></div><div class="stat-number good" id="benignFlows">—</div><div class="stat-foot">Classified as benign</div></div>
+        <div class="card"><div class="stat-top">Detected Attacks <span class="stat-icon">⚠</span></div><div class="stat-number bad" id="attackFlows">—</div><div class="stat-foot">Classified as attacks</div></div>
+        <div class="card"><div class="stat-top">Unknown Flows <span class="stat-icon">?</span></div><div class="stat-number warn" id="unknownFlows">—</div><div class="stat-foot">Missing or unknown labels</div></div>
+    </div>
+</section>
+
+<section id="modules">
+    <div class="section-heading"><div><h2>Detection modules</h2><p>Current model and data availability.</p></div></div>
+    <div class="grid modules-grid">
+        <div class="card module-card">
+            <div class="module-head"><div class="module-icon">⌘</div><div><h3>Network Intrusion Detection</h3><p>Traffic and attack classification</p></div></div>
+            <div class="module-status"><span class="dot" id="networkDot"></span><span class="small" id="networkStatus">Checking...</span></div>
+            <div class="module-desc">Inspect flow timestamps, endpoints, protocol, packet counts, model predictions and attack categories.</div>
+            <a class="module-link" href="#network">View network flows →</a>
+        </div>
+        <div class="card module-card cyan">
+            <div class="module-head"><div class="module-icon">↗</div><div><h3>Malicious URL Detection</h3><p>URL feature classification</p></div></div>
+            <div class="module-status"><span class="dot" id="urlDot"></span><span class="small" id="urlStatus">Checking...</span></div>
+            <div class="module-desc">Analyze a submitted URL using the trained URL classification model.</div>
+            <a class="module-link" href="#url-scanner">Open URL scanner →</a>
+        </div>
+        <div class="card module-card green">
+            <div class="module-head"><div class="module-icon">✉</div><div><h3>AI Phishing Detection</h3><p>Email, SMS and message analysis</p></div></div>
+            <div class="module-status"><span class="dot" id="phishingDot"></span><span class="small" id="phishingStatus">Checking...</span></div>
+            <div class="module-desc">Analyze message text with the saved phishing classifier.</div>
+            <a class="module-link" href="#phishing-scanner">Open phishing scanner →</a>
+        </div>
+    </div>
+</section>
+
+<section class="grid two-col" style="margin-top:30px">
+    <div class="card" id="url-scanner">
+        <div class="eyebrow">MODULE 02</div>
+        <h2 style="margin:8px 0">Malicious URL Scanner</h2>
+        <div class="subtitle">Analyze a website URL with your trained model.</div>
+        <form id="urlForm">
+            <label class="form-label" for="urlInput">Website URL</label>
+            <input class="input" id="urlInput" placeholder="https://example.com" required>
+            <div class="form-actions">
+                <button class="btn primary" id="urlSubmit" type="submit">Analyze URL</button>
+                <button class="btn" type="reset">Clear</button>
             </div>
+        </form>
+        <div id="urlResult" class="result" aria-live="polite"></div>
+    </div>
 
-            <div class="stat-row">
-                <div class="stat-label">
-                    <span>Detected attacks</span>
-                    <strong id="attackPercent">—</strong>
-                </div>
-                <div class="track">
-                    <div class="bar bar-red" id="attackBar" style="width:0%"></div>
-                </div>
+    <div class="card" id="phishing-scanner">
+        <div class="eyebrow">MODULE 03</div>
+        <h2 style="margin:8px 0">AI Phishing Analyzer</h2>
+        <div class="subtitle">Paste an email, SMS or message to analyze it.</div>
+        <form id="phishingForm">
+            <label class="form-label" for="phishingInput">Message content</label>
+            <textarea id="phishingInput" placeholder="Paste the message here..." required></textarea>
+            <div class="form-actions">
+                <button class="btn primary" id="phishingSubmit" type="submit">Analyze Message</button>
+                <button class="btn" type="reset">Clear</button>
             </div>
+        </form>
+        <div id="phishingResult" class="result" aria-live="polite"></div>
+    </div>
+</section>
 
-            <div class="stat-row">
-                <div class="stat-label">
-                    <span>Invalid flows</span>
-                    <strong id="invalidPercent">—</strong>
-                </div>
-                <div class="track">
-                    <div class="bar bar-yellow" id="invalidBar" style="width:0%"></div>
-                </div>
-            </div>
+<section id="network">
+    <div class="section-heading">
+        <div><h2>Network flow inspection</h2><p>Capture times, endpoints, protocol, packet counts and predictions.</p></div>
+        <button class="btn" onclick="loadFlows()">Reload flows</button>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr>
+                <th>Flow Start Time</th>
+                <th>Detection Time</th>
+                <th>Source IP</th>
+                <th>Source Port</th>
+                <th>Destination IP</th>
+                <th>Destination Port</th>
+                <th>Protocol</th>
+                <th>Flow Duration</th>
+                <th>Forward Packets</th>
+                <th>Backward Packets</th>
+                <th>Forward Bytes</th>
+                <th>Backward Bytes</th>
+                <th>Prediction</th>
+                <th>Attack Type</th>
+                <th>Attack Score</th>
+            </tr></thead>
+            <tbody id="flowsBody"><tr><td colspan="15" class="empty">Loading network flows...</td></tr></tbody>
+        </table>
+    </div>
+    <p class="small">These rows represent CICFlowMeter flows, not individual packets. Timestamps are shown as stored in the CSV; missing fields appear as “—”.</p>
+</section>
 
-            <div id="message">Waiting for API data...</div>
-        </div>
+<section id="alerts">
+    <div class="section-heading">
+        <div><h2>Security alerts</h2><p>Network flows identified by the backend alert filter.</p></div>
+        <button class="btn" onclick="loadAlerts()">Reload alerts</button>
+    </div>
+    <div class="card"><div id="alertsList" class="alert-list"><div class="empty">Loading alerts...</div></div></div>
+</section>
 
-        <div class="panel">
-            <div class="panel-heading">
-                <h2>Attack categories</h2>
-                <small>Detected only</small>
-            </div>
-            <div id="attackTypes" class="empty">
-                No detected attack categories.
-            </div>
-        </div>
-    </section>
-
-    <section class="panel" style="margin-bottom:22px">
-        <div class="panel-heading">
-            <h2>Recent network flows</h2>
-            <select id="flowLimit" aria-label="Number of recent flows">
-                <option value="10">Last 10</option>
-                <option value="25">Last 25</option>
-                <option value="50" selected>Last 50</option>
-                <option value="100">Last 100</option>
-            </select>
-        </div>
-
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Source IP</th>
-                        <th>Destination IP</th>
-                        <th>Source port</th>
-                        <th>Destination port</th>
-                        <th>Protocol</th>
-                        <th>Prediction</th>
-                        <th>Attack type</th>
-                        <th>Attack score</th>
-                        <th>Timestamp</th>
-                    </tr>
-                </thead>
-                <tbody id="flowTable">
-                    <tr><td colspan="9" class="empty">Loading flows...</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section class="panel">
-        <div class="panel-heading">
-            <h2>Recent security alerts</h2>
-            <small id="alertCount">0 alerts</small>
-        </div>
-        <div id="alerts" class="empty">
-            No network attack alerts recorded.
-        </div>
-    </section>
-</main>
-
-<footer>
-    CyberGuard · AI-powered cyber threat detection and response
-    <div id="lastUpdated" style="margin-top:7px">Not yet updated</div>
+<footer class="footer">
+    <span>CyberGuard · AI-Powered Cybersecurity Platform</span>
+    <span>Backend: <span id="footerStatus">Connecting</span> · Refresh interval: 5 seconds</span>
 </footer>
+</main>
+</div>
 
 <script>
+"use strict";
+
 const API = "/api";
+const $ = id => document.getElementById(id);
 
-const $ = (id) => document.getElementById(id);
-
-function escapeHtml(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    })[char]);
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    })[c]);
 }
 
-function displayValue(value) {
-    return value === null || value === undefined || value === ""
-        ? "—"
-        : String(value);
-}
+function firstValue(row, keys, fallback = "—") {
+    const normalized = {};
+    Object.keys(row || {}).forEach(key => {
+        normalized[key.toLowerCase().trim()] = row[key];
+    });
 
-function formatTime(value) {
-    if (!value) return "—";
-    return escapeHtml(value);
-}
-
-async function getJSON(url) {
-    const response = await fetch(url, { cache: "no-store" });
-
-    if (!response.ok) {
-        throw new Error(`${response.status}: ${response.statusText}`);
+    for (const key of keys) {
+        const value = normalized[key.toLowerCase().trim()];
+        if (value !== undefined && value !== null && value !== "") return value;
     }
-
-    return response.json();
+    return fallback;
 }
 
-function setBar(barId, percentId, count, total) {
-    const percent = total ? (count / total) * 100 : 0;
-
-    $(barId).style.width = `${percent}%`;
-    $(percentId).textContent = `${percent.toFixed(1)}%`;
+function formatScore(value) {
+    if (value === null || value === undefined || value === "") return "—";
+    const n = Number(value);
+    if (!Number.isFinite(n)) return String(value);
+    return n >= 0 && n <= 1 ? (n * 100).toFixed(2) + "%" : n.toFixed(2);
 }
 
-function renderFlows(flows) {
-    const table = $("flowTable");
+async function apiRequest(path, options = {}) {
+    const response = await fetch(API + path, {
+        ...options,
+        headers: {
+            ...(options.body ? {"Content-Type":"application/json"} : {}),
+            ...(options.headers || {})
+        }
+    });
 
-    if (!flows.length) {
-        table.innerHTML =
-            '<tr><td colspan="9" class="empty">No network flows available.</td></tr>';
+    let data;
+    try { data = await response.json(); }
+    catch { throw new Error("Server returned an invalid response."); }
+
+    if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
+    return data;
+}
+
+function setModuleStatus(prefix, available, message) {
+    $(prefix + "Dot").className = "dot " + (available ? "online" : "offline");
+    $(prefix + "Status").textContent = message || (available ? "Available" : "Unavailable");
+}
+
+function setApiStatus(online) {
+    $("apiDot").className = "dot " + (online ? "online" : "offline");
+    $("apiStatus").textContent = online ? "Backend online" : "Backend unavailable";
+    $("footerStatus").textContent = online ? "Connected" : "Disconnected";
+}
+
+async function loadHealth() {
+    try {
+        const data = await apiRequest("/health");
+        setApiStatus(true);
+        const modules = data.modules || {};
+
+        setModuleStatus("network", !!modules.network_ids?.pipeline_module_exists,
+            modules.network_ids?.pipeline_module_exists ? "Pipeline module found" : "Pipeline module missing");
+        setModuleStatus("url", !!modules.malicious_url?.available,
+            modules.malicious_url?.available ? "Model loaded" : "Model unavailable");
+        setModuleStatus("phishing", !!modules.phishing_detection?.available,
+            modules.phishing_detection?.available ? "Model loaded" : "Model unavailable");
+    } catch {
+        setApiStatus(false);
+        ["network","url","phishing"].forEach(p => setModuleStatus(p, false, "Backend unavailable"));
+    }
+}
+
+async function loadCaptureStatus() {
+    try {
+        const data = await apiRequest("/network/capture/status");
+        const state = data.state || "unknown";
+        const labels = {
+            waiting:"Waiting",
+            starting:"Starting worker",
+            starting_pipeline:"Starting pipeline",
+            capturing_and_detecting:"Capturing / detecting",
+            cycle_completed:"Cycle completed; restarting",
+            error:"Pipeline error",
+            stopped:"Stopped"
+        };
+
+        $("captureState").textContent = labels[state] || state;
+        $("captureDot").className = "dot " +
+            (state === "capturing_and_detecting" || state === "starting_pipeline" ? "online" :
+             state === "error" ? "offline" : "");
+
+        $("captureBadge").textContent = data.running ? "Worker active" : "Worker inactive";
+
+        $("captureDetails").textContent =
+            "Pipeline restarts: " + (data.process_restarts ?? 0) +
+            (data.last_started ? " · Last started: " + new Date(data.last_started).toLocaleTimeString() : "") +
+            (data.last_completed ? " · Last completed: " + new Date(data.last_completed).toLocaleTimeString() : "");
+
+        $("captureError").textContent = data.last_error || "";
+        $("captureError").className = data.last_error ? "small bad" : "small";
+    } catch (error) {
+        $("captureState").textContent = "Status unavailable";
+        $("captureDetails").textContent = error.message;
+        $("captureDot").className = "dot offline";
+        $("captureBadge").textContent = "Unknown";
+    }
+}
+
+async function loadDashboard() {
+    try {
+        const data = await apiRequest("/dashboard");
+        $("totalFlows").textContent = data.total_flows ?? 0;
+        $("benignFlows").textContent = data.benign_flows ?? 0;
+        $("attackFlows").textContent = data.attack_flows ?? 0;
+        $("unknownFlows").textContent = data.unknown_flows ?? 0;
+        $("lastUpdated").textContent = "Updated " + new Date().toLocaleTimeString();
+    } catch {
+        $("lastUpdated").textContent = "Dashboard data unavailable";
+    }
+}
+
+function predictionTag(value) {
+    const label = String(value ?? "").trim().toLowerCase();
+    if (["0","0.0","benign","normal","legitimate"].includes(label))
+        return '<span class="tag safe">BENIGN</span>';
+    if (["1","1.0","attack","malicious","phishing","suspicious"].includes(label))
+        return '<span class="tag danger">ATTACK</span>';
+    return '<span class="tag warning">' + escapeHTML(value ?? "UNKNOWN") + '</span>';
+}
+
+function renderFlows(rows) {
+    const body = $("flowsBody");
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+        body.innerHTML = '<tr><td colspan="15" class="empty">No flows found. Open the dashboard and check the live IDS worker status above.</td></tr>';
         return;
     }
 
-    table.innerHTML = flows.map(flow => {
-        const prediction = String(flow.Binary_Prediction ?? "").toUpperCase();
-        const statusClass = prediction === "ATTACK"
-            ? "pill-attack"
-            : prediction === "BENIGN"
-                ? "pill-benign"
-                : "pill-invalid";
+    body.innerHTML = rows.slice().reverse().map(row => {
+        const flowTime = firstValue(row, [
+            "timestamp","Timestamp","Flow Start Time","flow_start_time","Start Time"
+        ]);
+        const detectionTime = firstValue(row, [
+            "Detection_Time","Detection Time","detection_time","Processed_At"
+        ]);
+        const srcIP = firstValue(row, ["src_ip","Src IP","Source IP","Source","Src"]);
+        const srcPort = firstValue(row, ["src_port","Src Port","Source Port"]);
+        const dstIP = firstValue(row, ["dst_ip","Dst IP","Destination IP","Destination","Dst"]);
+        const dstPort = firstValue(row, ["dst_port","Dst Port","Destination Port"]);
+        const protocol = firstValue(row, ["protocol","Protocol"]);
+        const duration = firstValue(row, ["Flow Duration","flow_duration"]);
+        const fwdPackets = firstValue(row, ["Total Fwd Packets","Total_Fwd_Packets","tot_fwd_pkts"]);
+        const bwdPackets = firstValue(row, ["Total Backward Packets","Total Bwd Packets","Total_Bwd_Packets","tot_bwd_pkts"]);
+        const fwdBytes = firstValue(row, ["Total Length of Fwd Packets","totlen_fwd_pkts"]);
+        const bwdBytes = firstValue(row, ["Total Length of Bwd Packets","totlen_bwd_pkts"]);
+        const prediction = firstValue(row, ["Binary_Prediction","Prediction","Label","Class"], "Unknown");
+        const attackType = firstValue(row, ["Attack_Type","Attack Type"]);
+        const score = firstValue(row, ["Attack_Model_Score","Binary_Model_Score"], null);
 
-        return `
-        <tr>
-            <td>${escapeHtml(displayValue(flow.src_ip))}</td>
-            <td>${escapeHtml(displayValue(flow.dst_ip))}</td>
-            <td>${escapeHtml(displayValue(flow.src_port))}</td>
-            <td>${escapeHtml(displayValue(flow.dst_port))}</td>
-            <td>${escapeHtml(displayValue(flow.protocol))}</td>
-            <td><span class="pill ${statusClass}">
-                ${escapeHtml(displayValue(prediction))}
-            </span></td>
-            <td>${escapeHtml(displayValue(flow.Attack_Type))}</td>
-            <td>${flow.Binary_Model_Score == null
-                ? "—"
-                : escapeHtml((Number(flow.Binary_Model_Score) * 100).toFixed(1) + "%")}
-            </td>
-            <td>${formatTime(flow.timestamp || flow.Detection_Time)}</td>
+        return `<tr>
+            <td>${escapeHTML(flowTime)}</td>
+            <td>${escapeHTML(detectionTime)}</td>
+            <td>${escapeHTML(srcIP)}</td>
+            <td>${escapeHTML(srcPort)}</td>
+            <td>${escapeHTML(dstIP)}</td>
+            <td>${escapeHTML(dstPort)}</td>
+            <td>${escapeHTML(protocol)}</td>
+            <td>${escapeHTML(duration)}</td>
+            <td>${escapeHTML(fwdPackets)}</td>
+            <td>${escapeHTML(bwdPackets)}</td>
+            <td>${escapeHTML(fwdBytes)}</td>
+            <td>${escapeHTML(bwdBytes)}</td>
+            <td>${predictionTag(prediction)}</td>
+            <td>${escapeHTML(attackType)}</td>
+            <td>${escapeHTML(formatScore(score))}</td>
         </tr>`;
     }).join("");
 }
 
-function renderAttackTypes(types) {
-    const entries = Object.entries(types || {});
-    const container = $("attackTypes");
+async function loadFlows() {
+    try {
+        const data = await apiRequest("/network/flows?limit=100");
+        renderFlows(data.flows || []);
+    } catch (error) {
+        $("flowsBody").innerHTML = '<tr><td colspan="15" class="empty">Could not load flows: ' + escapeHTML(error.message) + '</td></tr>';
+    }
+}
 
-    if (!entries.length) {
-        container.innerHTML = "No detected attack categories.";
-        container.className = "empty";
+function renderAlerts(rows) {
+    const container = $("alertsList");
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+        container.innerHTML = '<div class="empty">No flows currently match the backend alert filter. This does not prove that the network is threat-free.</div>';
         return;
     }
 
-    container.className = "";
-    container.innerHTML = entries.map(([name, count]) => `
-        <div class="stat-row">
-            <div class="stat-label">
-                <span>${escapeHtml(name)}</span>
-                <strong>${escapeHtml(count)}</strong>
-            </div>
-        </div>
-    `).join("");
+    container.innerHTML = rows.slice().reverse().map(row => {
+        const attack = firstValue(row, ["Attack_Type","Attack Type"], "Unspecified attack");
+        const time = firstValue(row, ["timestamp","Timestamp","Flow Start Time","Detection_Time","Detection Time"]);
+        const src = firstValue(row, ["src_ip","Src IP","Source IP","Source"]);
+        const srcPort = firstValue(row, ["src_port","Src Port","Source Port"]);
+        const dst = firstValue(row, ["dst_ip","Dst IP","Destination IP","Destination"]);
+        const dstPort = firstValue(row, ["dst_port","Dst Port","Destination Port"]);
+        const score = firstValue(row, ["Attack_Model_Score","Binary_Model_Score"], null);
+
+        return `<div class="alert-item">
+            <strong><span class="tag danger">DETECTION</span> ${escapeHTML(attack)}</strong>
+            <div class="alert-meta">Flow time: ${escapeHTML(time)}</div>
+            <div class="alert-meta">Source: ${escapeHTML(src)}:${escapeHTML(srcPort)} → Destination: ${escapeHTML(dst)}:${escapeHTML(dstPort)}</div>
+            <div class="alert-meta">Model score: ${escapeHTML(formatScore(score))}</div>
+        </div>`;
+    }).join("");
 }
 
-function renderAlerts(alerts) {
-    $("alertCount").textContent = `${alerts.length} alerts`;
-
-    if (!alerts.length) {
-        $("alerts").className = "empty";
-        $("alerts").textContent = "No network attack alerts recorded.";
-        return;
+async function loadAlerts() {
+    try {
+        const data = await apiRequest("/network/alerts?limit=100");
+        renderAlerts(data.alerts || []);
+    } catch (error) {
+        $("alertsList").innerHTML = '<div class="empty">Could not load alerts: ' + escapeHTML(error.message) + '</div>';
     }
-
-    $("alerts").className = "";
-    $("alerts").innerHTML = alerts.map(alert => `
-        <div style="padding:13px 0;border-bottom:1px solid var(--border)">
-            <strong class="red">
-                ${escapeHtml(alert.Attack_Type || "Attack detected")}
-            </strong>
-            <div style="margin-top:6px;color:var(--muted);font-size:12px">
-                ${escapeHtml(alert.src_ip || "Unknown source")}
-                →
-                ${escapeHtml(alert.dst_ip || "Unknown destination")}
-                · ${escapeHtml(alert.Detection_Time || alert.timestamp || "Time unavailable")}
-            </div>
-        </div>
-    `).join("");
 }
 
-async function refreshDashboard() {
-    $("connectionStatus").textContent = "Updating...";
+function showResult(id, type, title, lines) {
+    const element = $(id);
+    element.className = "result show " + type;
+    element.innerHTML = `<h4>${escapeHTML(title)}</h4>` +
+        lines.map(line => `<p><strong>${escapeHTML(line.label)}:</strong> ${escapeHTML(line.value)}</p>`).join("");
+}
+
+function showApiError(id, message) {
+    showResult(id, "error", "Analysis unavailable", [{label:"Details",value:message}]);
+}
+
+$("urlForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    const url = $("urlInput").value.trim();
+    if (!url) return;
+
+    const button = $("urlSubmit");
+    button.disabled = true;
+    button.textContent = "Analyzing...";
 
     try {
-        const [summary, flowData, alertData] = await Promise.all([
-            getJSON(`${API}/dashboard`),
-            getJSON(`${API}/network/flows?limit=${$("flowLimit").value}`),
-            getJSON(`${API}/network/alerts`)
+        const data = await apiRequest("/url/analyze", {
+            method:"POST",
+            body:JSON.stringify({url})
+        });
+
+        const prediction = data.prediction || data.classification || "Unknown";
+        const normalized = String(prediction).toLowerCase();
+        const isMalicious = normalized.includes("malicious");
+        const probability = typeof data.malicious_probability === "number"
+            ? (data.malicious_probability * 100).toFixed(2) + "%"
+            : "Not provided";
+
+        showResult("urlResult", isMalicious ? "danger" : "safe", "URL Analysis Result", [
+            {label:"Analyzed URL",value:data.url || url},
+            {label:"Classification",value:prediction},
+            {label:"Malicious probability",value:probability},
+            {label:"Recommended action",value:data.recommended_action || "Verify independently."},
+            {label:"Note",value:"A model prediction does not guarantee that a website is safe or malicious."}
         ]);
-
-        $("totalFlows").textContent = summary.total_flows ?? 0;
-        $("benignFlows").textContent = summary.benign_flows ?? 0;
-        $("attacks").textContent = summary.attacks_detected ?? 0;
-        $("invalidFlows").textContent = summary.invalid_flows ?? 0;
-
-        const total = summary.total_flows || 0;
-
-        setBar("benignBar", "benignPercent",
-            summary.benign_flows || 0, total);
-        setBar("attackBar", "attackPercent",
-            summary.attacks_detected || 0, total);
-        setBar("invalidBar", "invalidPercent",
-            summary.invalid_flows || 0, total);
-
-        renderFlows(flowData.flows || []);
-        renderAttackTypes(summary.attack_types || {});
-        renderAlerts(alertData.alerts || []);
-
-        $("statusDot").style.background = "var(--green)";
-        $("connectionStatus").textContent = "API connected";
-        $("message").textContent =
-            "Statistics reflect saved model predictions; they are not a guarantee that all threats are detected.";
-
-        $("lastUpdated").textContent =
-            "Last refreshed: " + new Date().toLocaleString();
-
     } catch (error) {
-        $("statusDot").style.background = "var(--red)";
-        $("connectionStatus").textContent = "API unavailable";
-        $("message").textContent =
-            "Could not load dashboard data: " + error.message;
+        showApiError("urlResult", error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Analyze URL";
+    }
+});
+
+$("urlForm").addEventListener("reset", () => {
+    $("urlResult").className = "result";
+    $("urlResult").innerHTML = "";
+});
+
+$("phishingForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    const text = $("phishingInput").value.trim();
+    if (!text) return;
+
+    const button = $("phishingSubmit");
+    button.disabled = true;
+    button.textContent = "Analyzing...";
+
+    try {
+        const data = await apiRequest("/phishing/analyze", {
+            method:"POST",
+            body:JSON.stringify({text})
+        });
+
+        const classification = data.classification || "Unknown";
+        const normalized = classification.toLowerCase();
+        const type = normalized.includes("suspicious") ||
+                     normalized.includes("phishing") ||
+                     normalized.includes("unrecognized") ? "danger" : "safe";
+        const probability = typeof data.suspicious_probability === "number"
+            ? (data.suspicious_probability * 100).toFixed(2) + "%"
+            : "Not provided";
+
+        showResult("phishingResult", type, "Phishing Analysis Result", [
+            {label:"Classification",value:classification},
+            {label:"Suspicious probability",value:probability},
+            {label:"Model label",value:data.prediction ?? "—"},
+            {label:"Recommended action",value:data.recommended_action || "Verify through a trusted channel."},
+            {label:"Note",value:"The classification is an indicator, not proof that a message is safe or malicious."}
+        ]);
+    } catch (error) {
+        showApiError("phishingResult", error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Analyze Message";
+    }
+});
+
+$("phishingForm").addEventListener("reset", () => {
+    $("phishingResult").className = "result";
+    $("phishingResult").innerHTML = "";
+});
+
+async function refreshAll() {
+    $("refreshBtn").disabled = true;
+    try {
+        await Promise.all([
+            loadHealth(),
+            loadCaptureStatus(),
+            loadDashboard(),
+            loadFlows(),
+            loadAlerts()
+        ]);
+    } finally {
+        $("refreshBtn").disabled = false;
     }
 }
 
-$("refreshButton").addEventListener("click", refreshDashboard);
-$("flowLimit").addEventListener("change", refreshDashboard);
+document.querySelectorAll(".nav-item").forEach(item => {
+    item.addEventListener("click", () => {
+        document.querySelectorAll(".nav-item").forEach(nav => nav.classList.remove("active"));
+        item.classList.add("active");
+    });
+});
 
-refreshDashboard();
-setInterval(refreshDashboard, 5000);
+refreshAll();
+setInterval(refreshAll, 5000);
 </script>
 </body>
 </html>
