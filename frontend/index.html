@@ -1,0 +1,603 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberGuard | Security Operations</title>
+
+<style>
+:root {
+    --bg: #0b1020;
+    --panel: #121a2d;
+    --panel2: #172137;
+    --border: #293650;
+    --text: #e8eefb;
+    --muted: #93a2bd;
+    --cyan: #58d8e8;
+    --green: #45d6a0;
+    --red: #ff6b81;
+    --yellow: #f5c66b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, Segoe UI, Arial, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 5%;
+    border-bottom: 1px solid var(--border);
+    background: #0e1527;
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: .4px;
+}
+
+.brand span { color: var(--cyan); }
+
+.subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--green);
+    font-size: 13px;
+}
+
+.dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--green);
+}
+
+main {
+    max-width: 1450px;
+    margin: auto;
+    padding: 28px 5%;
+}
+
+.page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+h1 {
+    font-size: 27px;
+    margin: 0 0 7px;
+}
+
+p {
+    color: var(--muted);
+    margin: 0;
+    font-size: 14px;
+}
+
+button, select {
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+}
+
+button:hover { border-color: var(--cyan); }
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.card, .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+}
+
+.card { padding: 20px; }
+
+.card-label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.card-value {
+    font-size: 34px;
+    font-weight: 750;
+    margin: 15px 0 8px;
+}
+
+.card-note {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.green { color: var(--green); }
+.red { color: var(--red); }
+.cyan { color: var(--cyan); }
+.yellow { color: var(--yellow); }
+
+.grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.panel { padding: 21px; min-width: 0; }
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.panel-heading small {
+    color: var(--muted);
+}
+
+.stat-row {
+    margin: 22px 0;
+}
+
+.stat-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+    margin-bottom: 9px;
+}
+
+.track {
+    height: 8px;
+    background: #27334b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width .3s;
+}
+
+.bar-green { background: var(--green); }
+.bar-red { background: var(--red); }
+.bar-yellow { background: var(--yellow); }
+
+.table-wrap { overflow-x: auto; }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+th {
+    text-align: left;
+    padding: 13px 12px;
+    color: var(--muted);
+    background: var(--panel2);
+    font-weight: 600;
+}
+
+td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:last-child td { border-bottom: none; }
+
+.pill {
+    display: inline-block;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.pill-benign {
+    background: #12372f;
+    color: var(--green);
+}
+
+.pill-attack {
+    background: #451f30;
+    color: var(--red);
+}
+
+.pill-invalid {
+    background: #45351d;
+    color: var(--yellow);
+}
+
+.empty {
+    text-align: center;
+    padding: 28px 12px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+}
+
+#message {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 15px;
+}
+
+@media (max-width: 900px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 500px) {
+    header { padding: 18px 5%; }
+    .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .card { padding: 14px; }
+    .card-value { font-size: 27px; }
+    h1 { font-size: 23px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+    <div>
+        <div class="brand">CYBER<span>GUARD</span></div>
+        <div class="subtitle">AI-POWERED CYBERSECURITY PLATFORM</div>
+    </div>
+    <div class="status">
+        <span class="dot" id="statusDot"></span>
+        <span id="connectionStatus">Connecting to API...</span>
+    </div>
+</header>
+
+<main>
+    <section class="page-title">
+        <div>
+            <h1>Security Operations Center</h1>
+            <p>Network monitoring and threat detection overview</p>
+        </div>
+        <button id="refreshButton">↻ Refresh data</button>
+    </section>
+
+    <section class="cards">
+        <div class="card">
+            <div class="card-label">Total network flows</div>
+            <div class="card-value cyan" id="totalFlows">—</div>
+            <div class="card-note">Recorded flow predictions</div>
+        </div>
+        <div class="card">
+            <div class="card-label">Benign flows</div>
+            <div class="card-value green" id="benignFlows">—</div>
+            <div class="card-note">Classified as benign</div>
+        </div>
+        <div class="card">
+            <div class="card-label">Detected attacks</div>
+            <div class="card-value red" id="attacks">—</div>
+            <div class="card-note">Flagged by binary IDS</div>
+        </div>
+        <div class="card">
+            <div class="card-label">Invalid flows</div>
+            <div class="card-value yellow" id="invalidFlows">—</div>
+            <div class="card-note">Invalid or incomplete features</div>
+        </div>
+    </section>
+
+    <section class="grid">
+        <div class="panel">
+            <div class="panel-heading">
+                <h2>Network traffic overview</h2>
+                <small>From saved predictions</small>
+            </div>
+
+            <div class="stat-row">
+                <div class="stat-label">
+                    <span>Benign flows</span>
+                    <strong id="benignPercent">—</strong>
+                </div>
+                <div class="track">
+                    <div class="bar bar-green" id="benignBar" style="width:0%"></div>
+                </div>
+            </div>
+
+            <div class="stat-row">
+                <div class="stat-label">
+                    <span>Detected attacks</span>
+                    <strong id="attackPercent">—</strong>
+                </div>
+                <div class="track">
+                    <div class="bar bar-red" id="attackBar" style="width:0%"></div>
+                </div>
+            </div>
+
+            <div class="stat-row">
+                <div class="stat-label">
+                    <span>Invalid flows</span>
+                    <strong id="invalidPercent">—</strong>
+                </div>
+                <div class="track">
+                    <div class="bar bar-yellow" id="invalidBar" style="width:0%"></div>
+                </div>
+            </div>
+
+            <div id="message">Waiting for API data...</div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h2>Attack categories</h2>
+                <small>Detected only</small>
+            </div>
+            <div id="attackTypes" class="empty">
+                No detected attack categories.
+            </div>
+        </div>
+    </section>
+
+    <section class="panel" style="margin-bottom:22px">
+        <div class="panel-heading">
+            <h2>Recent network flows</h2>
+            <select id="flowLimit" aria-label="Number of recent flows">
+                <option value="10">Last 10</option>
+                <option value="25">Last 25</option>
+                <option value="50" selected>Last 50</option>
+                <option value="100">Last 100</option>
+            </select>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source IP</th>
+                        <th>Destination IP</th>
+                        <th>Source port</th>
+                        <th>Destination port</th>
+                        <th>Protocol</th>
+                        <th>Prediction</th>
+                        <th>Attack type</th>
+                        <th>Attack score</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="flowTable">
+                    <tr><td colspan="9" class="empty">Loading flows...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <h2>Recent security alerts</h2>
+            <small id="alertCount">0 alerts</small>
+        </div>
+        <div id="alerts" class="empty">
+            No network attack alerts recorded.
+        </div>
+    </section>
+</main>
+
+<footer>
+    CyberGuard · AI-powered cyber threat detection and response
+    <div id="lastUpdated" style="margin-top:7px">Not yet updated</div>
+</footer>
+
+<script>
+const API = "/api";
+
+const $ = (id) => document.getElementById(id);
+
+function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function displayValue(value) {
+    return value === null || value === undefined || value === ""
+        ? "—"
+        : String(value);
+}
+
+function formatTime(value) {
+    if (!value) return "—";
+    return escapeHtml(value);
+}
+
+async function getJSON(url) {
+    const response = await fetch(url, { cache: "no-store" });
+
+    if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+    }
+
+    return response.json();
+}
+
+function setBar(barId, percentId, count, total) {
+    const percent = total ? (count / total) * 100 : 0;
+
+    $(barId).style.width = `${percent}%`;
+    $(percentId).textContent = `${percent.toFixed(1)}%`;
+}
+
+function renderFlows(flows) {
+    const table = $("flowTable");
+
+    if (!flows.length) {
+        table.innerHTML =
+            '<tr><td colspan="9" class="empty">No network flows available.</td></tr>';
+        return;
+    }
+
+    table.innerHTML = flows.map(flow => {
+        const prediction = String(flow.Binary_Prediction ?? "").toUpperCase();
+        const statusClass = prediction === "ATTACK"
+            ? "pill-attack"
+            : prediction === "BENIGN"
+                ? "pill-benign"
+                : "pill-invalid";
+
+        return `
+        <tr>
+            <td>${escapeHtml(displayValue(flow.src_ip))}</td>
+            <td>${escapeHtml(displayValue(flow.dst_ip))}</td>
+            <td>${escapeHtml(displayValue(flow.src_port))}</td>
+            <td>${escapeHtml(displayValue(flow.dst_port))}</td>
+            <td>${escapeHtml(displayValue(flow.protocol))}</td>
+            <td><span class="pill ${statusClass}">
+                ${escapeHtml(displayValue(prediction))}
+            </span></td>
+            <td>${escapeHtml(displayValue(flow.Attack_Type))}</td>
+            <td>${flow.Binary_Model_Score == null
+                ? "—"
+                : escapeHtml((Number(flow.Binary_Model_Score) * 100).toFixed(1) + "%")}
+            </td>
+            <td>${formatTime(flow.timestamp || flow.Detection_Time)}</td>
+        </tr>`;
+    }).join("");
+}
+
+function renderAttackTypes(types) {
+    const entries = Object.entries(types || {});
+    const container = $("attackTypes");
+
+    if (!entries.length) {
+        container.innerHTML = "No detected attack categories.";
+        container.className = "empty";
+        return;
+    }
+
+    container.className = "";
+    container.innerHTML = entries.map(([name, count]) => `
+        <div class="stat-row">
+            <div class="stat-label">
+                <span>${escapeHtml(name)}</span>
+                <strong>${escapeHtml(count)}</strong>
+            </div>
+        </div>
+    `).join("");
+}
+
+function renderAlerts(alerts) {
+    $("alertCount").textContent = `${alerts.length} alerts`;
+
+    if (!alerts.length) {
+        $("alerts").className = "empty";
+        $("alerts").textContent = "No network attack alerts recorded.";
+        return;
+    }
+
+    $("alerts").className = "";
+    $("alerts").innerHTML = alerts.map(alert => `
+        <div style="padding:13px 0;border-bottom:1px solid var(--border)">
+            <strong class="red">
+                ${escapeHtml(alert.Attack_Type || "Attack detected")}
+            </strong>
+            <div style="margin-top:6px;color:var(--muted);font-size:12px">
+                ${escapeHtml(alert.src_ip || "Unknown source")}
+                →
+                ${escapeHtml(alert.dst_ip || "Unknown destination")}
+                · ${escapeHtml(alert.Detection_Time || alert.timestamp || "Time unavailable")}
+            </div>
+        </div>
+    `).join("");
+}
+
+async function refreshDashboard() {
+    $("connectionStatus").textContent = "Updating...";
+
+    try {
+        const [summary, flowData, alertData] = await Promise.all([
+            getJSON(`${API}/dashboard`),
+            getJSON(`${API}/network/flows?limit=${$("flowLimit").value}`),
+            getJSON(`${API}/network/alerts`)
+        ]);
+
+        $("totalFlows").textContent = summary.total_flows ?? 0;
+        $("benignFlows").textContent = summary.benign_flows ?? 0;
+        $("attacks").textContent = summary.attacks_detected ?? 0;
+        $("invalidFlows").textContent = summary.invalid_flows ?? 0;
+
+        const total = summary.total_flows || 0;
+
+        setBar("benignBar", "benignPercent",
+            summary.benign_flows || 0, total);
+        setBar("attackBar", "attackPercent",
+            summary.attacks_detected || 0, total);
+        setBar("invalidBar", "invalidPercent",
+            summary.invalid_flows || 0, total);
+
+        renderFlows(flowData.flows || []);
+        renderAttackTypes(summary.attack_types || {});
+        renderAlerts(alertData.alerts || []);
+
+        $("statusDot").style.background = "var(--green)";
+        $("connectionStatus").textContent = "API connected";
+        $("message").textContent =
+            "Statistics reflect saved model predictions; they are not a guarantee that all threats are detected.";
+
+        $("lastUpdated").textContent =
+            "Last refreshed: " + new Date().toLocaleString();
+
+    } catch (error) {
+        $("statusDot").style.background = "var(--red)";
+        $("connectionStatus").textContent = "API unavailable";
+        $("message").textContent =
+            "Could not load dashboard data: " + error.message;
+    }
+}
+
+$("refreshButton").addEventListener("click", refreshDashboard);
+$("flowLimit").addEventListener("change", refreshDashboard);
+
+refreshDashboard();
+setInterval(refreshDashboard, 5000);
+</script>
+</body>
+</html>
