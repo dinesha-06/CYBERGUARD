@@ -1,0 +1,1034 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberGuard | AI Security Center</title>
+
+<style>
+:root {
+    --bg: #080d18;
+    --panel: #101827;
+    --panel2: #141f31;
+    --border: #243249;
+    --text: #edf3ff;
+    --muted: #8c9bb2;
+    --blue: #5b9dff;
+    --cyan: #48d9e8;
+    --green: #43d9a3;
+    --red: #ff657d;
+    --yellow: #ffcc66;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+}
+
+button, input, textarea { font: inherit; }
+
+button { cursor: pointer; }
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 245px;
+    flex-shrink: 0;
+    background: #0c1321;
+    border-right: 1px solid var(--border);
+    padding: 25px 17px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px 27px;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand-icon {
+    width: 39px;
+    height: 39px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    color: white;
+    font-size: 21px;
+    background: linear-gradient(135deg, #2776ff, #23c7d7);
+}
+
+.brand h2 { margin: 0; font-size: 19px; letter-spacing: .3px; }
+.brand small { display: block; color: var(--muted); margin-top: 4px; }
+
+.nav-label {
+    color: #64758e;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin: 27px 10px 11px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin: 4px 0;
+    color: #a8b7cc;
+    text-decoration: none;
+    border-radius: 9px;
+    transition: .2s;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: #192942;
+    color: white;
+}
+
+.nav-item.active { box-shadow: inset 3px 0 var(--blue); }
+
+.nav-icon { width: 20px; text-align: center; font-size: 16px; }
+
+.sidebar-bottom {
+    margin: 35px 5px 0;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #101b2c;
+}
+
+.sidebar-bottom p { margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+main {
+    flex: 1;
+    min-width: 0;
+    padding: 28px 32px 45px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.eyebrow {
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+h1 { margin: 7px 0 5px; font-size: clamp(23px, 3vw, 31px); }
+.subtitle { color: var(--muted); line-height: 1.6; }
+
+.top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--yellow);
+    display: inline-block;
+}
+
+.dot.online { background: var(--green); }
+.dot.offline { background: var(--red); }
+
+.btn {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #18253a;
+    color: var(--text);
+    padding: 10px 14px;
+    transition: .2s;
+}
+
+.btn:hover { border-color: var(--blue); }
+.btn.primary { background: #2468dd; border-color: #2468dd; color: white; }
+.btn:disabled { opacity: .55; cursor: wait; }
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 29px 0 15px;
+    flex-wrap: wrap;
+}
+
+.section-heading h2 { margin: 0; font-size: 17px; }
+.section-heading p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+
+.grid { display: grid; gap: 15px; }
+.stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.module-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 19px;
+    min-width: 0;
+}
+
+.stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.stat-label { color: var(--muted); font-size: 12px; }
+.stat-icon {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: #1b2b45;
+    color: var(--cyan);
+    font-size: 17px;
+}
+
+.stat-number { font-size: 30px; font-weight: 700; margin: 16px 0 7px; overflow-wrap: anywhere; }
+.stat-foot { color: var(--muted); font-size: 11px; }
+.good { color: var(--green); }
+.bad { color: var(--red); }
+.warn { color: var(--yellow); }
+
+.module-card { position: relative; overflow: hidden; }
+.module-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--blue);
+}
+.module-card.cyan::before { background: var(--cyan); }
+.module-card.green::before { background: var(--green); }
+
+.module-header { display: flex; align-items: center; gap: 12px; }
+.module-icon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #1a2a44;
+    font-size: 21px;
+}
+.module-header h3 { margin: 0 0 5px; font-size: 15px; }
+.module-header p { margin: 0; color: var(--muted); font-size: 11px; }
+
+.module-status { margin: 18px 0; }
+
+.status-text { color: var(--muted); font-size: 12px; }
+.module-description { color: #a8b6cb; line-height: 1.7; min-height: 43px; font-size: 12px; }
+
+.module-link {
+    display: inline-block;
+    margin-top: 13px;
+    text-decoration: none;
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.two-column { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); }
+
+.form-label {
+    display: block;
+    color: #cbd7e8;
+    margin: 17px 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.input, textarea {
+    display: block;
+    width: 100%;
+    background: #0b1321;
+    color: var(--text);
+    border: 1px solid #2a3a53;
+    border-radius: 8px;
+    padding: 12px;
+    outline: none;
+}
+
+.input:focus, textarea:focus { border-color: var(--blue); }
+textarea { min-height: 135px; resize: vertical; line-height: 1.6; }
+.input::placeholder, textarea::placeholder { color: #64758e; }
+
+.form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+.result {
+    display: none;
+    margin-top: 18px;
+    padding: 15px;
+    border: 1px solid var(--border);
+    background: #0b1321;
+    border-radius: 10px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.result.show { display: block; }
+.result h4 { margin: 0 0 8px; font-size: 14px; }
+.result p { margin: 6px 0; color: #bac8da; }
+.result.safe { border-color: #246e59; }
+.result.danger { border-color: #813748; }
+.result.warning { border-color: #78602e; }
+.result.error { border-color: #813748; }
+
+.result-label { font-weight: 700; font-size: 15px; }
+.result-meta { font-size: 12px; color: var(--muted); }
+
+.table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+}
+
+table { width: 100%; border-collapse: collapse; min-width: 680px; }
+th, td {
+    padding: 13px 15px;
+    text-align: left;
+    border-bottom: 1px solid #202c40;
+    font-size: 12px;
+    white-space: nowrap;
+}
+th { color: var(--muted); background: #101827; font-weight: 600; }
+td { color: #c7d4e6; }
+tr:last-child td { border-bottom: 0; }
+
+.tag {
+    display: inline-block;
+    border-radius: 5px;
+    padding: 4px 7px;
+    background: #192c42;
+    color: #a8caff;
+    font-size: 10px;
+}
+.tag.safe { background: #12382f; color: var(--green); }
+.tag.danger { background: #421d2a; color: #ff899b; }
+.tag.warning { background: #3b301b; color: var(--yellow); }
+
+.empty { padding: 27px; text-align: center; color: var(--muted); line-height: 1.8; }
+.alert-list { display: grid; gap: 10px; }
+.alert-item {
+    padding: 13px;
+    background: #0c1422;
+    border: 1px solid #2c283a;
+    border-radius: 9px;
+}
+.alert-title { font-weight: 600; font-size: 12px; }
+.alert-meta { color: var(--muted); font-size: 11px; margin-top: 7px; overflow-wrap: anywhere; }
+
+.footer {
+    margin-top: 32px;
+    padding-top: 17px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    color: #667891;
+    font-size: 11px;
+}
+
+.toast {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    max-width: min(380px, calc(100vw - 44px));
+    background: #19263a;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 9px;
+    padding: 13px 16px;
+    display: none;
+    z-index: 10;
+}
+.toast.show { display: block; }
+
+@media (max-width: 1100px) {
+    .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .module-grid { grid-template-columns: 1fr; }
+    .module-description { min-height: 0; }
+}
+
+@media (max-width: 850px) {
+    .sidebar { width: 70px; padding: 18px 9px; }
+    .brand { padding: 0 4px 20px; justify-content: center; }
+    .brand-text, .nav-label, .nav-text, .sidebar-bottom { display: none; }
+    .nav-item { justify-content: center; padding: 13px 8px; }
+    main { padding: 23px 18px 35px; }
+}
+
+@media (max-width: 650px) {
+    .two-column { grid-template-columns: 1fr; }
+    .stats-grid { gap: 10px; }
+    .card { padding: 15px; }
+    .stat-number { font-size: 25px; }
+    .topbar { align-items: flex-start; }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-icon">⬡</div>
+        <div class="brand-text">
+            <h2>CyberGuard</h2>
+            <small>AI Security Center</small>
+        </div>
+    </div>
+
+    <div class="nav-label">WORKSPACE</div>
+    <a class="nav-item active" href="#overview">
+        <span class="nav-icon">▦</span><span class="nav-text">Overview</span>
+    </a>
+    <a class="nav-item" href="#modules">
+        <span class="nav-icon">⬡</span><span class="nav-text">Detection Modules</span>
+    </a>
+
+    <div class="nav-label">DETECTION</div>
+    <a class="nav-item" href="#network">
+        <span class="nav-icon">⌘</span><span class="nav-text">Network IDS</span>
+    </a>
+    <a class="nav-item" href="#url-scanner">
+        <span class="nav-icon">↗</span><span class="nav-text">URL Scanner</span>
+    </a>
+    <a class="nav-item" href="#phishing-scanner">
+        <span class="nav-icon">✉</span><span class="nav-text">Phishing Scanner</span>
+    </a>
+    <a class="nav-item" href="#alerts">
+        <span class="nav-icon">⚑</span><span class="nav-text">Security Alerts</span>
+    </a>
+
+    <div class="sidebar-bottom">
+        <span class="dot online"></span>
+        <strong style="margin-left:7px">Local protection</strong>
+        <p>Model status and detections are provided by your local CyberGuard backend.</p>
+    </div>
+</aside>
+
+<main>
+    <header class="topbar">
+        <div>
+            <div class="eyebrow">THREAT MONITORING PLATFORM</div>
+            <h1>Security Overview</h1>
+            <div class="subtitle">Monitor network traffic, suspicious URLs, and phishing messages from one workspace.</div>
+        </div>
+        <div class="top-actions">
+            <div class="status-pill">
+                <span id="apiDot" class="dot"></span>
+                <span id="apiStatus">Connecting to backend...</span>
+            </div>
+            <button class="btn" id="refreshBtn" onclick="refreshAll()">↻ Refresh</button>
+        </div>
+    </header>
+
+    <section id="overview">
+        <div class="section-heading">
+            <div>
+                <h2>Network telemetry</h2>
+                <p>Statistics calculated from the saved network detection results.</p>
+            </div>
+            <span class="status-text" id="lastUpdated">Waiting for data</span>
+        </div>
+
+        <div class="grid stats-grid">
+            <div class="card">
+                <div class="stat-top">
+                    <span class="stat-label">Total Network Flows</span>
+                    <span class="stat-icon">⌘</span>
+                </div>
+                <div class="stat-number" id="totalFlows">—</div>
+                <div class="stat-foot">Recorded flow rows</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-top">
+                    <span class="stat-label">Benign Flows</span>
+                    <span class="stat-icon">✓</span>
+                </div>
+                <div class="stat-number good" id="benignFlows">—</div>
+                <div class="stat-foot">Classified as benign</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-top">
+                    <span class="stat-label">Detected Attacks</span>
+                    <span class="stat-icon">⚠</span>
+                </div>
+                <div class="stat-number bad" id="attackFlows">—</div>
+                <div class="stat-foot">Classified as attacks</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-top">
+                    <span class="stat-label">Unknown Flows</span>
+                    <span class="stat-icon">?</span>
+                </div>
+                <div class="stat-number warn" id="unknownFlows">—</div>
+                <div class="stat-foot">Missing or unrecognized labels</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="modules">
+        <div class="section-heading">
+            <div>
+                <h2>Detection modules</h2>
+                <p>Check availability and open each analyzer below.</p>
+            </div>
+        </div>
+
+        <div class="grid module-grid">
+            <div class="card module-card">
+                <div class="module-header">
+                    <div class="module-icon">⌘</div>
+                    <div>
+                        <h3>Network Intrusion Detection</h3>
+                        <p>Traffic and attack classification</p>
+                    </div>
+                </div>
+                <div class="module-status">
+                    <span class="dot" id="networkDot"></span>
+                    <span class="status-text" id="networkStatus">Checking status...</span>
+                </div>
+                <div class="module-description">Review captured network flows, binary predictions, attack categories, and generated alerts.</div>
+                <a class="module-link" href="#network">View network telemetry →</a>
+            </div>
+
+            <div class="card module-card cyan">
+                <div class="module-header">
+                    <div class="module-icon">↗</div>
+                    <div>
+                        <h3>Malicious URL Detection</h3>
+                        <p>URL feature-based classification</p>
+                    </div>
+                </div>
+                <div class="module-status">
+                    <span class="dot" id="urlDot"></span>
+                    <span class="status-text" id="urlStatus">Checking status...</span>
+                </div>
+                <div class="module-description">Submit a URL for analysis using the trained URL classification model.</div>
+                <a class="module-link" href="#url-scanner">Open URL scanner →</a>
+            </div>
+
+            <div class="card module-card green">
+                <div class="module-header">
+                    <div class="module-icon">✉</div>
+                    <div>
+                        <h3>AI Phishing Detection</h3>
+                        <p>Email, SMS, and message analysis</p>
+                    </div>
+                </div>
+                <div class="module-status">
+                    <span class="dot" id="phishingDot"></span>
+                    <span class="status-text" id="phishingStatus">Checking status...</span>
+                </div>
+                <div class="module-description">Analyze text for suspicious or likely legitimate content using your saved text classifier.</div>
+                <a class="module-link" href="#phishing-scanner">Open phishing scanner →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="grid two-column" style="margin-top:30px">
+        <div class="card" id="url-scanner">
+            <div class="eyebrow">MODULE 02</div>
+            <h2 style="margin:8px 0">Malicious URL Scanner</h2>
+            <div class="subtitle">Analyze a URL with the trained URL model.</div>
+
+            <form id="urlForm">
+                <label class="form-label" for="urlInput">Website URL</label>
+                <input class="input" id="urlInput" type="text"
+                    placeholder="https://example.com" required>
+                <div class="form-actions">
+                    <button class="btn primary" id="urlSubmit" type="submit">Analyze URL</button>
+                    <button class="btn" type="reset" id="urlClear">Clear</button>
+                </div>
+            </form>
+            <div id="urlResult" class="result" aria-live="polite"></div>
+        </div>
+
+        <div class="card" id="phishing-scanner">
+            <div class="eyebrow">MODULE 03</div>
+            <h2 style="margin:8px 0">AI Phishing Analyzer</h2>
+            <div class="subtitle">Paste the content of an email, SMS, or message.</div>
+
+            <form id="phishingForm">
+                <label class="form-label" for="phishingInput">Message content</label>
+                <textarea id="phishingInput" placeholder="Paste the email or message here..." required></textarea>
+                <div class="form-actions">
+                    <button class="btn primary" id="phishingSubmit" type="submit">Analyze Message</button>
+                    <button class="btn" type="reset" id="phishingClear">Clear</button>
+                </div>
+            </form>
+            <div id="phishingResult" class="result" aria-live="polite"></div>
+        </div>
+    </section>
+
+    <section id="network">
+        <div class="section-heading">
+            <div>
+                <h2>Recent network flows</h2>
+                <p>Latest rows from live_detection_results.csv.</p>
+            </div>
+            <button class="btn" onclick="loadFlows()">Reload flows</button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source IP</th>
+                        <th>Destination IP</th>
+                        <th>Destination Port</th>
+                        <th>Prediction</th>
+                        <th>Attack Type</th>
+                        <th>Attack Score</th>
+                    </tr>
+                </thead>
+                <tbody id="flowsBody">
+                    <tr><td colspan="6" class="empty">Loading network flows...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="alerts">
+        <div class="section-heading">
+            <div>
+                <h2>Security alerts</h2>
+                <p>Rows classified as attacks or marked as alerts by the network detector.</p>
+            </div>
+            <button class="btn" onclick="loadAlerts()">Reload alerts</button>
+        </div>
+
+        <div class="card">
+            <div id="alertsList" class="alert-list">
+                <div class="empty">Loading alerts...</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <span>CyberGuard · AI-Powered Cybersecurity Platform</span>
+        <span>Backend: <span id="footerStatus">Connecting</span> · Refresh interval: 5 seconds</span>
+    </footer>
+</main>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+
+const API = "/api";
+let refreshTimer = null;
+let toastTimer = null;
+
+const $ = (id) => document.getElementById(id);
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function displayValue(value, fallback = "—") {
+    if (value === null || value === undefined || value === "") return fallback;
+    return String(value);
+}
+
+function firstValue(row, keys, fallback = "—") {
+    const normalized = {};
+    Object.keys(row || {}).forEach((key) => {
+        normalized[key.toLowerCase()] = row[key];
+    });
+
+    for (const key of keys) {
+        const value = normalized[key.toLowerCase()];
+        if (value !== undefined && value !== null && value !== "") {
+            return value;
+        }
+    }
+    return fallback;
+}
+
+function formatScore(value) {
+    if (value === null || value === undefined || value === "") return "—";
+
+    const number = Number(value);
+    if (!Number.isFinite(number)) return String(value);
+
+    // Model scores are expected to be probabilities in the 0–1 range.
+    if (number >= 0 && number <= 1) return (number * 100).toFixed(2) + "%";
+    return number.toFixed(2);
+}
+
+function setModuleStatus(prefix, available, message) {
+    const dot = $(prefix + "Dot");
+    const status = $(prefix + "Status");
+
+    dot.className = "dot " + (available ? "online" : "offline");
+    status.textContent = message || (available ? "Available" : "Unavailable");
+}
+
+function setApiStatus(online) {
+    $("apiDot").className = "dot " + (online ? "online" : "offline");
+    $("apiStatus").textContent = online ? "Backend online" : "Backend unavailable";
+    $("footerStatus").textContent = online ? "Connected" : "Disconnected";
+}
+
+function showToast(message) {
+    $("toast").textContent = message;
+    $("toast").classList.add("show");
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $("toast").classList.remove("show"), 3500);
+}
+
+async function apiRequest(path, options = {}) {
+    const response = await fetch(API + path, {
+        ...options,
+        headers: {
+            ...(options.body ? { "Content-Type": "application/json" } : {}),
+            ...(options.headers || {})
+        }
+    });
+
+    let data;
+    try {
+        data = await response.json();
+    } catch {
+        throw new Error("The server returned an invalid response.");
+    }
+
+    if (!response.ok) {
+        throw new Error(data.error || `Request failed (${response.status})`);
+    }
+
+    return data;
+}
+
+async function loadHealth() {
+    try {
+        const data = await apiRequest("/health");
+        setApiStatus(true);
+
+        const modules = data.modules || {};
+
+        const networkAvailable = !!modules.network_ids?.available;
+        const urlAvailable = !!modules.malicious_url?.available;
+        const phishingAvailable = !!modules.phishing_detection?.available;
+
+        setModuleStatus(
+            "network",
+            networkAvailable,
+            networkAvailable ? "Results file found" : "Results file not found"
+        );
+
+        setModuleStatus(
+            "url",
+            urlAvailable,
+            urlAvailable ? "Model loaded" : "Model unavailable"
+        );
+
+        setModuleStatus(
+            "phishing",
+            phishingAvailable,
+            phishingAvailable ? "Model loaded" : "Model unavailable"
+        );
+    } catch (error) {
+        setApiStatus(false);
+
+        ["network", "url", "phishing"].forEach((prefix) => {
+            setModuleStatus(prefix, false, "Backend unavailable");
+        });
+    }
+}
+
+async function loadDashboard() {
+    try {
+        const data = await apiRequest("/dashboard");
+
+        $("totalFlows").textContent = displayValue(data.total_flows, "0");
+        $("benignFlows").textContent = displayValue(data.benign_flows, "0");
+        $("attackFlows").textContent = displayValue(data.attack_flows, "0");
+        $("unknownFlows").textContent = displayValue(data.unknown_flows, "0");
+
+        $("lastUpdated").textContent =
+            "Updated " + new Date().toLocaleTimeString();
+    } catch (error) {
+        $("lastUpdated").textContent = "Dashboard data unavailable";
+    }
+}
+
+function predictionTag(value) {
+    const normalized = String(value ?? "").toLowerCase().trim();
+
+    if (["0", "0.0", "benign", "normal", "legitimate"].includes(normalized)) {
+        return '<span class="tag safe">BENIGN</span>';
+    }
+
+    if (["1", "1.0", "attack", "malicious", "phishing", "suspicious"].includes(normalized)) {
+        return '<span class="tag danger">ATTACK</span>';
+    }
+
+    return '<span class="tag warning">' + escapeHTML(value ?? "UNKNOWN") + '</span>';
+}
+
+function renderFlows(rows) {
+    const body = $("flowsBody");
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+        body.innerHTML = '<tr><td colspan="6" class="empty">No network flow records found. Run the network detection pipeline to generate results.</td></tr>';
+        return;
+    }
+
+    body.innerHTML = rows.slice().reverse().map((row) => {
+        const source = firstValue(row, ["Src IP", "Source IP", "src_ip", "Source", "Src"]);
+        const destination = firstValue(row, ["Dst IP", "Destination IP", "dst_ip", "Destination", "Dst"]);
+        const port = firstValue(row, ["Dst Port", "Destination Port", "dst_port", "Destination_Port"]);
+        const prediction = firstValue(row, ["Binary_Prediction", "Prediction", "Label", "Class"], "Unknown");
+        const attack = firstValue(row, ["Attack_Type", "Attack Type"], "—");
+        const score = firstValue(row, ["Attack_Model_Score", "Binary_Model_Score", "Attack Score"], null);
+
+        return `<tr>
+            <td>${escapeHTML(source)}</td>
+            <td>${escapeHTML(destination)}</td>
+            <td>${escapeHTML(port)}</td>
+            <td>${predictionTag(prediction)}</td>
+            <td>${escapeHTML(attack)}</td>
+            <td>${escapeHTML(formatScore(score))}</td>
+        </tr>`;
+    }).join("");
+}
+
+async function loadFlows() {
+    try {
+        const data = await apiRequest("/network/flows?limit=100");
+        renderFlows(data.flows || []);
+    } catch (error) {
+        $("flowsBody").innerHTML =
+            '<tr><td colspan="6" class="empty">Could not load flows: ' +
+            escapeHTML(error.message) + '</td></tr>';
+    }
+}
+
+function renderAlerts(rows) {
+    const container = $("alertsList");
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+        container.innerHTML =
+            '<div class="empty">No network alerts found. This means no rows currently match the backend alert filter; it does not prove the network is threat-free.</div>';
+        return;
+    }
+
+    container.innerHTML = rows.slice().reverse().map((row) => {
+        const attack = firstValue(row, ["Attack_Type", "Attack Type"], "Unspecified attack");
+        const source = firstValue(row, ["Src IP", "Source IP", "src_ip", "Source"], "Unknown source");
+        const destination = firstValue(row, ["Dst IP", "Destination IP", "dst_ip", "Destination"], "Unknown destination");
+        const port = firstValue(row, ["Dst Port", "Destination Port", "dst_port"], "—");
+        const score = firstValue(row, ["Attack_Model_Score", "Binary_Model_Score"], null);
+
+        return `<div class="alert-item">
+            <div class="alert-title"><span class="tag danger">DETECTION</span> &nbsp;${escapeHTML(attack)}</div>
+            <div class="alert-meta">Source: ${escapeHTML(source)} → Destination: ${escapeHTML(destination)}:${escapeHTML(port)}</div>
+            <div class="alert-meta">Model score: ${escapeHTML(formatScore(score))}</div>
+        </div>`;
+    }).join("");
+}
+
+async function loadAlerts() {
+    try {
+        const data = await apiRequest("/network/alerts?limit=100");
+        renderAlerts(data.alerts || []);
+    } catch (error) {
+        $("alertsList").innerHTML =
+            '<div class="empty">Could not load alerts: ' +
+            escapeHTML(error.message) + '</div>';
+    }
+}
+
+function showResult(id, type, title, lines) {
+    const element = $(id);
+    element.className = "result show " + type;
+
+    element.innerHTML =
+        `<h4>${escapeHTML(title)}</h4>` +
+        lines.map((line) =>
+            `<p>${escapeHTML(line.label)}: ${escapeHTML(line.value)}</p>`
+        ).join("");
+}
+
+function showApiError(id, message) {
+    showResult(id, "error", "Analysis unavailable", [
+        { label: "Details", value: message }
+    ]);
+}
+
+$("urlForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const url = $("urlInput").value.trim();
+    if (!url) return;
+
+    const button = $("urlSubmit");
+    button.disabled = true;
+    button.textContent = "Analyzing...";
+
+    try {
+        const data = await apiRequest("/url/analyze", {
+            method: "POST",
+            body: JSON.stringify({ url })
+        });
+
+        const prediction = data.prediction || data.classification || "Unknown";
+        const maliciousProbability = data.malicious_probability;
+        const isMalicious = String(prediction).toLowerCase().includes("malicious");
+
+        const probabilityText =
+            typeof maliciousProbability === "number"
+                ? (maliciousProbability * 100).toFixed(2) + "%"
+                : "Not provided";
+
+        showResult(
+            "urlResult",
+            isMalicious ? "danger" : "safe",
+            "URL Analysis Result",
+            [
+                { label: "Analyzed URL", value: data.url || url },
+                { label: "Classification", value: prediction },
+                { label: "Malicious probability", value: probabilityText },
+                { label: "Recommended action", value: data.recommended_action || "Verify the result independently." },
+                { label: "Important", value: "A model prediction does not guarantee that a website is safe or malicious." }
+            ]
+        );
+    } catch (error) {
+        showApiError("urlResult", error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Analyze URL";
+    }
+});
+
+$("urlForm").addEventListener("reset", () => {
+    $("urlResult").className = "result";
+    $("urlResult").innerHTML = "";
+});
+
+$("phishingForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const text = $("phishingInput").value.trim();
+    if (!text) return;
+
+    const button = $("phishingSubmit");
+    button.disabled = true;
+    button.textContent = "Analyzing...";
+
+    try {
+        const data = await apiRequest("/phishing/analyze", {
+            method: "POST",
+            body: JSON.stringify({ text })
+        });
+
+        const classification = data.classification || "Unknown";
+        const normalized = classification.toLowerCase();
+
+        const type = normalized.includes("suspicious") ||
+                     normalized.includes("phishing") ||
+                     normalized.includes("unrecognized")
+                     ? "danger" : "safe";
+
+        const probability = data.suspicious_probability;
+
+        showResult(
+            "phishingResult",
+            type,
+            "Phishing Analysis Result",
+            [
+                { label: "Classification", value: classification },
+                { label: "Suspicious probability", value: typeof probability === "number" ? (probability * 100).toFixed(2) + "%" : "Not provided" },
+                { label: "Model label", value: data.prediction ?? "—" },
+                { label: "Recommended action", value: data.recommended_action || "Verify the message through a trusted channel." },
+                { label: "Important", value: "The model's classification is an indicator, not proof that a message is safe or malicious." }
+            ]
+        );
+    } catch (error) {
+        showApiError("phishingResult", error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Analyze Message";
+    }
+});
+
+$("phishingForm").addEventListener("reset", () => {
+    $("phishingResult").className = "result";
+    $("phishingResult").innerHTML = "";
+});
+
+async function refreshAll() {
+    $("refreshBtn").disabled = true;
+
+    try {
+        await Promise.all([
+            loadHealth(),
+            loadDashboard(),
+            loadFlows(),
+            loadAlerts()
+        ]);
+    } finally {
+        $("refreshBtn").disabled = false;
+    }
+}
+
+document.querySelectorAll(".nav-item").forEach((item) => {
+    item.addEventListener("click", () => {
+        document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("active"));
+        item.classList.add("active");
+    });
+});
+
+refreshAll();
+refreshTimer = setInterval(refreshAll, 5000);
+</script>
+</body>
+</html>

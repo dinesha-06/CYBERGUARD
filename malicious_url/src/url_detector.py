@@ -15,18 +15,19 @@ import re
 from urllib.parse import urlsplit, urlunsplit
 
 
+
 def normalize_url(raw_url):
-    """Convert Markdown-formatted links into plain URLs."""
+    """Convert Markdown-formatted links into plain, normalized URLs."""
 
     if not isinstance(raw_url, str):
         raise ValueError("URL must be a string.")
 
     url = raw_url.strip()
 
-    # Remove backslashes inserted before punctuation by escaped text.
+    # Remove escape backslashes inserted before URL punctuation.
     url = re.sub(r"\\([:/\\.?=&%#\-])", r"\1", url)
 
-    # Extract the destination from Markdown: [label](https://destination)
+    # Extract the destination from a Markdown link.
     markdown_match = re.fullmatch(
         r"\[([^\]]+)\]\((https?://[^)\s]+)\)",
         url,
@@ -44,13 +45,18 @@ def normalize_url(raw_url):
     if not parsed.hostname:
         raise ValueError("The URL must contain a valid hostname.")
 
+    # Normalize scheme and remove the fragment.
+    # Remove "/" only when it is the entire path.
+    path = "" if parsed.path == "/" else parsed.path
+
     return urlunsplit((
         parsed.scheme.lower(),
         parsed.netloc,
-        parsed.path,
+        path,
         parsed.query,
         "",
     ))
+
 
 
 
